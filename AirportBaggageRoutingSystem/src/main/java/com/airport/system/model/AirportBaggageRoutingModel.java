@@ -13,7 +13,7 @@ import java.util.Map;
 * @author  Avishek Basak
 * @version 1.0
 */
-public class AirportBaggaeRoutingModel {
+public class AirportBaggageRoutingModel {
 	
 	private Map<String,FlightDepartureModel> departureMap = null;
 	private List<Bag> bags = null;

@@ -11,12 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.airport.system.constants.Constants;
-import com.airport.system.exceptions.AirportBaggaeSystemException;
+import com.airport.system.exceptions.AirportBaggageSystemException;
 import com.airport.system.helper.log.LogHelper;
 import com.airport.system.model.Bag;
 import com.airport.system.model.FlightDepartureModel;
 import com.airport.system.model.Gate;
-import com.airport.system.model.AirportBaggaeRoutingModel;
+import com.airport.system.model.AirportBaggageRoutingModel;
 import com.airport.system.model.Path;
 
 /**
@@ -38,9 +38,9 @@ public class FileBasedProcessing implements InputProcessingSystem {
 	 * (non-Javadoc)
 	 * @see com.airport.system.util.InputProcessingSystem#processInput()
 	 */
-	public AirportBaggaeRoutingModel processInput() throws AirportBaggaeSystemException {
+	public AirportBaggageRoutingModel processInput() throws AirportBaggageSystemException {
 
-		AirportBaggaeRoutingModel inputData = new AirportBaggaeRoutingModel();
+		AirportBaggageRoutingModel inputData = new AirportBaggageRoutingModel();
 		int section = 1;
 		long startTime = System.currentTimeMillis();
 		if(file!=null) {
@@ -49,7 +49,7 @@ public class FileBasedProcessing implements InputProcessingSystem {
 				//check if the file starts with "# Section:"
 				//if not throw exception
 				if (!lastLineRead.startsWith(Constants.INPUT_SECTION_PREFIX)) {
-					throw new AirportBaggaeSystemException(Constants.INVALID_INPUT_MESSAGE);
+					throw new AirportBaggageSystemException(Constants.INVALID_INPUT_MESSAGE);
 				}
 				/*
 				 * iterate through the file to cover all the three section:
@@ -74,14 +74,14 @@ public class FileBasedProcessing implements InputProcessingSystem {
 				}
 
 			}catch(FileNotFoundException ex) {
-				throw new AirportBaggaeSystemException(
+				throw new AirportBaggageSystemException(
 						"Unable to find exception: "+ ex.getMessage());
 			}finally {
 				long endTime = System.currentTimeMillis();
 				LogHelper.perfLog(PERFLOGGER, Level.INFO, this.getClass().getName(),"processInput()", "Time taken to process",endTime-startTime);
 			}
 		}else {
-			throw new AirportBaggaeSystemException(
+			throw new AirportBaggageSystemException(
 					"No file present to process");
 		}
 		return inputData;
@@ -93,9 +93,9 @@ public class FileBasedProcessing implements InputProcessingSystem {
 	 * @param lineScanner Scanner to scan through the file
 	 * @param section determine what section of the file
 	 * @return List of Bags 
-	 * @throws AirportBaggaeSystemException Input or processing error
+	 * @throws AirportBaggageSystemException Input or processing error
 	 */
-	private List<Bag> constructBaggageModel(Scanner lineScanner, int section) throws AirportBaggaeSystemException {
+	private List<Bag> constructBaggageModel(Scanner lineScanner, int section) throws AirportBaggageSystemException {
 		List<Bag> bags = new ArrayList<>();
 		if (section != 3) {
 			// Check for the next section to determine end of data
@@ -119,15 +119,15 @@ public class FileBasedProcessing implements InputProcessingSystem {
 	 * the method takes each line and split it to create Bag object.
 	 * @param nextLine each text line to be processed in the format <bag_number> <entry_point> <flight_id>
 	 * @param bags list of bags to store the created Bag object
-	 * @throws AirportBaggaeSystemException Input or processing error
+	 * @throws AirportBaggageSystemException Input or processing error
 	 */
-	private void constructBaggageModel(String nextLine, List<Bag> bags) throws AirportBaggaeSystemException {
+	private void constructBaggageModel(String nextLine, List<Bag> bags) throws AirportBaggageSystemException {
 		String[] input = nextLine.trim().split("\\s+");
 		if (input.length >= 3) {
 			Bag bag = new Bag(input[0], input[1], input[2]);
 			bags.add(bag);
 		}else {
-			throw new AirportBaggaeSystemException(Constants.INVALID_INPUT_MESSAGE);
+			throw new AirportBaggageSystemException(Constants.INVALID_INPUT_MESSAGE);
 		}
 	}
 
@@ -138,9 +138,9 @@ public class FileBasedProcessing implements InputProcessingSystem {
 	 * @param lineScanner Scanner to scan through the file
 	 * @param section determine what section of the file
 	 * @return List of Bags 
-	 * @throws AirportBaggaeSystemException Input or processing error
+	 * @throws AirportBaggageSystemException Input or processing error
 	 */
-	private Map<String, FlightDepartureModel> constructDepartureMap(Scanner lineScanner, int section) throws AirportBaggaeSystemException {
+	private Map<String, FlightDepartureModel> constructDepartureMap(Scanner lineScanner, int section) throws AirportBaggageSystemException {
 		Map<String, FlightDepartureModel> departureMap = null;
 
 		departureMap = new HashMap<>();
@@ -168,15 +168,15 @@ public class FileBasedProcessing implements InputProcessingSystem {
 	 * The method reads each line and split it to create the Flight Departure object and store the information in map with the flightNo as the key
 	 * @param nextLine each text line to be processed in the format <flight_id> <flight_gate> <destination> <flight_time>
 	 * @param departureMap store the Flight Departure Information in map with the flightNo as the key
-	 * @throws AirportBaggaeSystemException
+	 * @throws AirportBaggageSystemException
 	 */
-	private void constructDepartureMap(String nextLine, Map<String, FlightDepartureModel> departureMap) throws AirportBaggaeSystemException {
+	private void constructDepartureMap(String nextLine, Map<String, FlightDepartureModel> departureMap) throws AirportBaggageSystemException {
 		String[] input = nextLine.trim().split("\\s+");
 		if (input.length >= 4) {
 			FlightDepartureModel departureModel = new FlightDepartureModel(input[0], input[1], input[2], input[3]);
 			departureMap.put(departureModel.getFlightNo(), departureModel);
 		} else {
-			throw new AirportBaggaeSystemException(Constants.INVALID_INPUT_MESSAGE);
+			throw new AirportBaggageSystemException(Constants.INVALID_INPUT_MESSAGE);
 		}
 	}
 
@@ -187,9 +187,9 @@ public class FileBasedProcessing implements InputProcessingSystem {
 	 * @param lineScanner Scanner to scan through the file
 	 * @param section determine what section of the file
 	 * @return map of gateId and corresponding Gate object 
-	 * @throws AirportBaggaeSystemException Input or processing error
+	 * @throws AirportBaggageSystemException Input or processing error
 	 */
-	private Map<String, Gate> constructConveyerSystem(Scanner lineScanner, int section) throws AirportBaggaeSystemException {
+	private Map<String, Gate> constructConveyerSystem(Scanner lineScanner, int section) throws AirportBaggageSystemException {
 		Map<String, Gate> gateMap = null;
 		if (gateMap == null) {
 			gateMap = new HashMap<>();
@@ -219,9 +219,9 @@ public class FileBasedProcessing implements InputProcessingSystem {
 	 * 
 	 * @param nextLine each text line to be processed in the format <flight_id> <flight_gate> <destination> <flight_time>
 	 * @param gateMap map to store each Gate object to corresponding to gateid.
-	 * @throws AirportBaggaeSystemException Input or processing error
+	 * @throws AirportBaggageSystemException Input or processing error
 	 */
-	private void constructConveyerSystem(String nextLine, Map<String, Gate> gateMap) throws AirportBaggaeSystemException {
+	private void constructConveyerSystem(String nextLine, Map<String, Gate> gateMap) throws AirportBaggageSystemException {
 		String[] input = nextLine.trim().split("\\s+");
 		if (input.length >= 3) {
 			try {
@@ -251,10 +251,10 @@ public class FileBasedProcessing implements InputProcessingSystem {
 				gateMap.put(input[0], sourceGate);
 				gateMap.put(input[1], destGate);
 			} catch (NumberFormatException e) {
-				throw new AirportBaggaeSystemException(Constants.INVALID_INPUT_MESSAGE);
+				throw new AirportBaggageSystemException(Constants.INVALID_INPUT_MESSAGE);
 			}
 		}else {
-			throw new AirportBaggaeSystemException(Constants.INVALID_INPUT_MESSAGE);
+			throw new AirportBaggageSystemException(Constants.INVALID_INPUT_MESSAGE);
 		}
 
 	}

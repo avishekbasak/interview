@@ -6,14 +6,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.airport.system.constants.Constants;
-import com.airport.system.exceptions.AirportBaggaeSystemException;
+import com.airport.system.exceptions.AirportBaggageSystemException;
 import com.airport.system.helper.log.LogHelper;
 import com.airport.system.main.Application;
-import com.airport.system.model.AirportBaggaeRoutingModel;
+import com.airport.system.model.AirportBaggageRoutingModel;
 import com.airport.system.model.Bag;
 import com.airport.system.model.Gate;
 import com.airport.system.shortpath.BaggageRoutingSystem;
-import com.airport.system.shortpath.impl.BaggaeRoutingUsingDijkstra;
+import com.airport.system.shortpath.impl.BaggageRoutingUsingDijkstra;
 import com.airport.system.util.FileBasedProcessing;
 import com.airport.system.util.InputProcessingSystem;
 /**
@@ -36,12 +36,12 @@ public class AirportBaggageSystem {
 	   * @return Nothing.
 	   */
 	public void processInput(String[] args){
-		AirportBaggaeRoutingModel inputData = null;
+		AirportBaggageRoutingModel inputData = null;
 		if (args!=null && args.length > 0) {
 			long startTime = System.currentTimeMillis();
 			try {
 				inputData = processInputFile(args[0]);
-			} catch (AirportBaggaeSystemException ex) {
+			} catch (AirportBaggageSystemException ex) {
 				System.err.println("Unable to process request:: " +ex.getMessage());
 			} finally {
 				long endTime = System.currentTimeMillis();
@@ -65,10 +65,10 @@ public class AirportBaggageSystem {
 	   * This method is used to parse the input based on File Based input
 	   * @param fileName File name to be processed
 	   * @return AirportBaggaeRoutingModel The data structure holds parsed data from input file.
-	   * @exception AirportBaggaeSystemException Input or processing error.
+	   * @exception AirportBaggageSystemException Input or processing error.
 	   */
-	private AirportBaggaeRoutingModel processInputFile(String fileName) throws AirportBaggaeSystemException {
-		AirportBaggaeRoutingModel inputData = null;
+	private AirportBaggageRoutingModel processInputFile(String fileName) throws AirportBaggageSystemException {
+		AirportBaggageRoutingModel inputData = null;
 		LogHelper.logInfo(LOGGER, this.getClass().getName(), "processInputFile(String fileName)" , "File:: "+fileName);
 		if(fileName!=null && fileName.trim().length()!=0){
 			File inputDataFile = new File(fileName.trim());
@@ -76,14 +76,14 @@ public class AirportBaggageSystem {
 			inputProcessingSystem.setFile(inputDataFile);
 			try {
 				inputData = inputProcessingSystem.processInput();
-			} catch (AirportBaggaeSystemException ex) {
+			} catch (AirportBaggageSystemException ex) {
 				LogHelper.logError(LOGGER, this.getClass().getName(), "processInputFile(String fileName)" , "File Not Found Exception", ex);
 				throw ex;
 			}
 			
 		}else {
 			LogHelper.logError(LOGGER, this.getClass().getName(), "processInputFile(String fileName)" , "File Name is either empty or not provided");
-			throw new AirportBaggaeSystemException("File Name is either empty or not provided");
+			throw new AirportBaggageSystemException("File Name is either empty or not provided");
 		}
 		return inputData;
 	}
@@ -93,8 +93,8 @@ public class AirportBaggageSystem {
 	   * @param inputData The data structure holds parsed data from input file
 	   * @return Nothing
 	   */
-	private void processInputData(AirportBaggaeRoutingModel inputData) {
-		BaggageRoutingSystem baggageRoutingSystem = new BaggaeRoutingUsingDijkstra();
+	private void processInputData(AirportBaggageRoutingModel inputData) {
+		BaggageRoutingSystem baggageRoutingSystem = new BaggageRoutingUsingDijkstra();
 		for (Bag baggageModel : inputData.getBags()) {
 			Gate sourceGate = inputData.getGateMap().get(baggageModel.getSourcePoint());
 

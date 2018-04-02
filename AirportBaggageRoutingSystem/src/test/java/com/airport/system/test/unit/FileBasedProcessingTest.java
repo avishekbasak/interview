@@ -10,8 +10,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.airport.system.exceptions.AirportBaggaeSystemException;
-import com.airport.system.model.AirportBaggaeRoutingModel;
+import com.airport.system.exceptions.AirportBaggageSystemException;
+import com.airport.system.model.AirportBaggageRoutingModel;
 import com.airport.system.util.FileBasedProcessing;
 import com.airport.system.util.InputProcessingSystem;
 
@@ -29,9 +29,9 @@ public class FileBasedProcessingTest {
 	/**
 	 * The method test processInput method for no file set
 	 */
-	public void test_processInput_NullInput() throws AirportBaggaeSystemException {
+	public void test_processInput_NullInput() throws AirportBaggageSystemException {
 		//Given
-		thrown.expect(AirportBaggaeSystemException.class);
+		thrown.expect(AirportBaggageSystemException.class);
         thrown.expectMessage(CoreMatchers.is("No file present to process"));
 		//When
 		InputProcessingSystem inputProcessing = new FileBasedProcessing();
@@ -44,9 +44,9 @@ public class FileBasedProcessingTest {
 	/**
 	 * The method test processInput method for no file set
 	 */
-	public void test_processInput_UnknownFileInput() throws AirportBaggaeSystemException {
+	public void test_processInput_UnknownFileInput() throws AirportBaggageSystemException {
 		//Given
-		thrown.expect(AirportBaggaeSystemException.class);
+		thrown.expect(AirportBaggageSystemException.class);
         thrown.expectMessage(CoreMatchers.containsString("Unable to find exception: "));
 		//When
 		InputProcessingSystem inputProcessing = new FileBasedProcessing();
@@ -60,13 +60,13 @@ public class FileBasedProcessingTest {
 	/**
 	 * The method test processInput method for valid file
 	 */
-	public void test_processInput_ValidInput() throws AirportBaggaeSystemException {
+	public void test_processInput_ValidInput() throws AirportBaggageSystemException {
 		//Given
 		InputProcessingSystem inputProcessing = new FileBasedProcessing();
 		File file = new File("src/test/resources/data/TestParsingInput.txt");
 		inputProcessing.setFile(file);
 		//When
-		AirportBaggaeRoutingModel airportBaggaeRoutingModel = inputProcessing.processInput();
+		AirportBaggageRoutingModel airportBaggaeRoutingModel = inputProcessing.processInput();
         //Then
 		assertThat(airportBaggaeRoutingModel, CoreMatchers.is(IsNull.notNullValue()));
 		assertThat(airportBaggaeRoutingModel.getBags(), CoreMatchers.is(IsNull.notNullValue()));

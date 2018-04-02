@@ -23,7 +23,7 @@ import com.airport.system.shortpath.BaggageRoutingSystem;
  * @author avishekbasak
  *
  */
-public class BaggaeRoutingUsingDijkstra implements BaggageRoutingSystem {
+public class BaggageRoutingUsingDijkstra implements BaggageRoutingSystem {
 
 	/* (non-Javadoc)
 	 * @see com.airport.system.model.BaggageRoutingSystem#computeShortestPath(com.airport.system.model.Gate)

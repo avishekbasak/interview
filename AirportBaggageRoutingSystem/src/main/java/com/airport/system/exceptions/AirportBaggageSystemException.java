@@ -7,7 +7,7 @@ package com.airport.system.exceptions;
 * @author  Avishek Basak
 * @version 1.0
 */
-public class AirportBaggaeSystemException extends Exception {
+public class AirportBaggageSystemException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -16,10 +16,10 @@ public class AirportBaggaeSystemException extends Exception {
 	//error message
 	private String errorMessage;
 	
-	public AirportBaggaeSystemException(String errorCode,String errorMessage) {
+	public AirportBaggageSystemException(String errorCode,String errorMessage) {
 		super(errorMessage);
 	}
-	public AirportBaggaeSystemException(String errorMessage) {
+	public AirportBaggageSystemException(String errorMessage) {
 		super(errorMessage);
 	}
 	/**
